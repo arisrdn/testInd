@@ -2,39 +2,17 @@
 // import
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
-// import "./styles.css";
+import { GlobalContext } from "../../contexts/globalContext";
 
 import Masonry from "./Masonry";
 import Card from "../../components/cards/NewCad";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// data
-// ─────────────────────────────────────────────────────────────────────────────
-
-const data = [
-	"🍎Apple",
-	"🍞Bread",
-	"🍰Cake",
-	"🍩Donut",
-	"🥚Egg",
-	"🍟Fries",
-	"🍇Grapes",
-	"🍯Honey",
-	"🍦Icecream",
-	"🌶Jalapeño",
-	"🥝Kiwi",
-	"🍋Lemon",
-];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// component
-// ─────────────────────────────────────────────────────────────────────────────
-
 function App() {
 	const [posts, setPosts] = useState([]);
 	const [search, setSearch] = useState("");
+	const [state, dispatch] = useContext(GlobalContext);
 
 	const getPosts = () => {
 		axios
@@ -58,6 +36,19 @@ function App() {
 		setPosts(filteredPosts);
 	}, [search]);
 
+	const addFav = (data) => {
+		dispatch({
+			type: "ADD_FAV",
+			payload: data,
+		});
+	};
+	const removeFav = (data) => {
+		dispatch({
+			type: "REMOVE_FAV",
+			payload: data,
+		});
+	};
+	console.log(state.imageFav);
 	return (
 		<>
 			<input
@@ -68,7 +59,13 @@ function App() {
 			/>
 			<Masonry columns={4}>
 				{posts.map((post, index) => (
-					<Card key={index} title={post.title} img={post.url} />
+					<Card
+						key={index}
+						data={post}
+						addFav={addFav}
+						removeFav={removeFav}
+						imageFav={state.imageFav}
+					/>
 				))}
 			</Masonry>
 		</>

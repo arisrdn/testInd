@@ -7,96 +7,39 @@ const initialState = {
 	currentRestaurant: null,
 	modal: false,
 	comments: [],
-	imgeFav: [],
+	imageFav: [
+		{
+			albumId: 1,
+			id: 2,
+			title: "reprehenderit est deserunt velit ipsam",
+			url: "https://via.placeholder.com/600/771796",
+			thumbnailUrl: "https://via.placeholder.com/150/771796",
+		},
+	],
 	tags: [],
 };
 
 export const reducer = (state, { type, payload }) => {
 	console.log("keranjang contect", state);
 	switch (type) {
-		case "ADD_CART":
-			if (state.carts.length) {
-				if (payload.restaurantId !== state.currentRestaurant) {
-					return {
-						...state,
-						modal: true,
-					};
-				}
-			}
-
-			const checkProductById = state.carts.find(
-				(cart) => cart.id === payload.id
-			);
-			if (checkProductById) {
-				const updatedCarts = state.carts.map((cart) =>
-					cart.id === payload.id
-						? {
-								...cart,
-								qty: cart.qty + 1,
-						  }
-						: cart
-				);
-
-				return {
-					...state,
-					carts: updatedCarts,
-				};
-			}
-
+		case "ADD_FAV":
 			return {
-				// //add data
 				...state,
-				currentRestaurant: payload.restaurantId,
-				carts: [
-					...state.carts,
+				imageFav: [
+					...state.imageFav,
 					{
 						...payload,
-						qty: 1,
 					},
 				],
 			};
-		case "REMOVE_CART":
-			const filteredCarts = state.carts.filter(
+		case "REMOVE_FAV":
+			const filteredCarts = state.imageFav.filter(
 				(cart) => cart.id !== payload.id
 			);
 
 			return {
 				...state,
-				carts: filteredCarts,
-			};
-		case "MINUS_CART":
-			const checkById = state.carts.find((cart) => cart.id === payload.id);
-
-			if (checkById) {
-				const updatedCarts = state.carts.map((cart) =>
-					cart.id === payload.id
-						? {
-								...cart,
-								qty: cart.qty - 1,
-						  }
-						: cart
-				);
-
-				return {
-					...state,
-					carts: updatedCarts,
-				};
-			}
-			return;
-		case "MODAL_OPEN":
-			return {
-				...state,
-				modal: true,
-			};
-		case "MODAL_CLOSE":
-			return {
-				...state,
-				modal: false,
-			};
-		case "EMPETY_CART":
-			return {
-				...state,
-				carts: [],
+				imageFav: filteredCarts,
 			};
 		default:
 			throw new Error();
