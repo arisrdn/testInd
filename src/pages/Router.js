@@ -3,6 +3,7 @@ import { Switch, Route, useLocation } from "react-router-dom";
 import { useQuery } from "react-query";
 import Gallery from "./gallery/index";
 import Detail from "./gallery/Detail";
+import Fav from "./gallery/Favorite";
 import Navbar from "../components/header/Navbar";
 
 export default function MasterRoute() {
@@ -10,7 +11,7 @@ export default function MasterRoute() {
 		<>
 			<Navbar />
 			<Switch>
-				<Route exact path="/" component={Detail} />
+				<Route exact path="/" component={Fav} />
 
 				{/* <Route exact path="/register" component={Register} /> */}
 			</Switch>
